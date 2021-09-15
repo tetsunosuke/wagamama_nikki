@@ -80,8 +80,19 @@ public class TopPageIndexServlet extends HttpServlet {
 		// もう一つのパターン  パターン②
 		request.setAttribute("cls_r", cls);
 
-		ArrayList<Calendar> cal2 = logic.generateDays();
-		request.setAttribute("cal2", cal2);
+		// ここからサンプルで　2021/1月を指定
+		// Date の二次元配列を生成する
+		ArrayList<Calendar> dates = logic.generateDays(2021,1);
+		int weekStart = dates.get(0).get(Calendar.DAY_OF_WEEK);
+		// 日曜から開始するために先頭にnull挿入（generateでやっても良い）
+		for (int i=0; i < weekStart; i++) {
+			dates.add(0, null);
+		}
+		//42 に満たない分もnull追加（あとで空表示にするため）
+		for (int i=dates.size(); i< 7 * 6; i++) {
+			dates.add(i, null);
+		}
+		request.setAttribute("dates", dates);
 
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/topPage/index.jsp");
 		rd.forward(request, response);

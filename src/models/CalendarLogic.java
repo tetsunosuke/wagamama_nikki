@@ -83,21 +83,48 @@ public class CalendarLogic {
 			cls.setDate(date);  // data > date
 			return cls;
 		}
+
+		/**
+		 * 当月の１日から末日までのArrayListを生成する
+		 * @return ArrayList<Calendar>
+		 */
 		public ArrayList<Calendar> generateDays()
-	    {
-	        // 空のArrayListを作成
-	        ArrayList<Calendar> cl = new ArrayList<Calendar>();
-	        Calendar cal=Calendar.getInstance();
+		{
+			// 空のArrayListを作成
+			ArrayList<Calendar> cl = new ArrayList<Calendar>();
+			Calendar cal=Calendar.getInstance();
+			return this.generateCalendars(cl, cal);
+	    }
+
+		private ArrayList<Calendar> generateCalendars(ArrayList<Calendar> cl, Calendar cal)
+		{
 	        // 月の末日
 	        int lastDay = cal.getActualMaximum(Calendar.DATE);
 
 	        // その月の日数分だけCalendarのインスタンスを作って、clに追加していく
 	        for (int i = 0; i < lastDay; i++) {
-	            Calendar cal2 = Calendar.getInstance();
-	            cal2.set(Calendar.DATE, i+1);
-	            cl.add(cal2);
+	            Calendar newCal = (Calendar)cal.clone();
+	            newCal.set(Calendar.DATE, i+1);
+	            cl.add(newCal);
 	        }
 
 	        return cl;
-	    }
+		}
+		/**
+		 * 指定された年月の１日から末日までのArrayListを生成する
+		 * @param int year
+		 * @param int month
+		 * @return ArrayList<Calendar>
+		 */
+		public ArrayList<Calendar> generateDays(int year, int month)
+		{
+			// 空のArrayListを作成
+			ArrayList<Calendar> cl = new ArrayList<Calendar>();
+			Calendar cal=Calendar.getInstance();
+			cal.clear();
+			cal.set(year, month-1, 1);
+
+			return this.generateCalendars(cl, cal);
+
+		}
 }
